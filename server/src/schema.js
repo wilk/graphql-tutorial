@@ -24,7 +24,7 @@ type Message {
 
 # This type specifies the entry points into our API
 type Query {
-  channels: [Channel]    # "[]" means this is a list of channels
+  channels(offset: Int, limit: Int): [Channel]    # "[]" means this is a list of channels
   channel(id: ID!): Channel
 }
 

@@ -28,19 +28,34 @@ const ChannelsList = ({ data: {loading, error, channels }}) => {
           </Link>
         </div>)
       )}
+      <button type="button">Load More</button>
+      {/* change to :
+        <button OnClick={onClickFunction}>
+          Load More
+        </button>
+       */}
     </div>
+
   );
 };
 
 export const channelsListQuery = gql`
-  query ChannelsListQuery {
-    channels {
+  query ChannelsListQuery($offset: Int, $limit: Int) {
+    channels(offset: $offset, limit: $limit) {
       id
       name
     }
   }
 `;
 
+
 export default graphql(channelsListQuery, {
-  options: { pollInterval: 5000 },
+  options: { 
+    //pollInterval: 5000
+    variables: {
+      offset: 0,
+      limit: 1
+    }
+  },
 })(ChannelsList);
+

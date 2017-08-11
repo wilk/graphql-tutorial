@@ -29,8 +29,12 @@ const pubsub = new PubSub();
 
 export const resolvers = {
   Query: {
-    channels: () => {
-      return channels;
+    channels: (root, args) => {
+      console.log('args[offset] ', args['offset'])
+      console.log('args[limit] ', args['limit'])
+      let offset = args['offset']
+      let limit = args['limit']
+      return channels.slice(offset, limit);
     },
     channel: (root, { id }) => {
       return channels.find(channel => channel.id === id);

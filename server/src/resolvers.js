@@ -21,6 +21,26 @@ const channels = [{
     id: '4',
     text: 'hello baseball world series',
   }]
+}, {
+id: '3',
+  name: 'basektball',
+  messages: [{
+    id: '5',
+    text: 'basketball is life',
+  }, {
+    id: '6',
+    text: 'hello basketball NBA finals',
+  }]
+}, {
+id: '4',
+  name: 'tennis',
+  messages: [{
+    id: '7',
+    text: 'tennis is life',
+  }, {
+    id: '8',
+    text: 'hello US Open',
+  }]
 }];
 let nextId = 3;
 let nextMessageId = 5;
@@ -30,11 +50,10 @@ const pubsub = new PubSub();
 export const resolvers = {
   Query: {
     channels: (root, args) => {
-      console.log('args[offset] ', args['offset'])
-      console.log('args[limit] ', args['limit'])
       let offset = args['offset']
       let limit = args['limit']
       return channels.slice(offset, limit);
+
     },
     channel: (root, { id }) => {
       return channels.find(channel => channel.id === id);

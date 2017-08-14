@@ -10,6 +10,24 @@ const channels = [{
   }, {
     id: '2',
     text: 'hello soccer world cup',
+  }, {
+    id: '3',
+    text: 'text3'
+  }, {
+    id: '4',
+    text: 'text4'
+  }, {
+    id: '5',
+    text: 'text5'
+  }, {
+    id: '6',
+    text: 'text6'
+  }, {
+    id: '7',
+    text: 'text7'
+  }, {
+    id: '8',
+    text: 'text8'
   }]
 }, {
   id: '2',
@@ -50,13 +68,19 @@ const pubsub = new PubSub();
 export const resolvers = {
   Query: {
     channels: (root, args) => {
-      let offset = args['offset']
-      let limit = args['limit']
-      return channels.slice(offset, offset+limit);
-
+      return channels;
     },
-    channel: (root, { id }) => {
-      return channels.find(channel => channel.id === id);
+    //channel: (root, { id }, { cursor }) => {
+    channel: (root, args) => {
+      let { id, cursor } = args;
+      let channel = channels.find(channel => channel.id === id);
+      console.log('og channel: ', channel);
+      let messages = channel.messages.slice(cursor-2, cursor);
+      console.log('messages: ', messages);
+      messages.cursor = cursor-2;
+      channel.messages = messages;
+      //console.log('channel: ', channel);
+      return channel;
     },
   },
   Mutation: {

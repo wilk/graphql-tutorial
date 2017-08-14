@@ -9,7 +9,14 @@ const typeDefs = `
 type Channel {
   id: ID!                # "!" denotes a required field
   name: String
-  messages: [Message]!
+  #messages: [Message]!
+  messages: MessagePage
+}
+
+# hard code limit into number of items returned by MessagePage type
+type MessagePage {
+  cursor: ID!
+  items: [Message]
 }
 
 input MessageInput{
@@ -24,8 +31,8 @@ type Message {
 
 # This type specifies the entry points into our API
 type Query {
-  channels(offset: Int, limit: Int): [Channel]    # "[]" means this is a list of channels
-  channel(id: ID!): Channel
+  channels: [Channel]    # "[]" means this is a list of channels
+  channel(id: ID!, cursor: ID): Channel
 }
 
 # The mutation root type, used to define all mutations

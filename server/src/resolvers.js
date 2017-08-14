@@ -42,8 +42,8 @@ id: '4',
     text: 'hello US Open',
   }]
 }];
-let nextId = 3;
-let nextMessageId = 5;
+let nextId = 5;
+let nextMessageId = 9;
 
 const pubsub = new PubSub();
 

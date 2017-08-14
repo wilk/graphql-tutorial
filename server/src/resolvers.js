@@ -52,7 +52,7 @@ export const resolvers = {
     channels: (root, args) => {
       let offset = args['offset']
       let limit = args['limit']
-      return channels.slice(offset, limit);
+      return channels.slice(offset, offset+limit);
 
     },
     channel: (root, { id }) => {

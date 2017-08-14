@@ -47,9 +47,8 @@ const ChannelsList = props => {
   console.log('props: ', props);
   const data = props.data
   const { loading, error, channels } = data;
-  //console.log(loading)
-  //console.log('props: ', props)
-  //console.log('data: ', data)
+  const loadMore = props.loadMore;
+
   if (loading) {
     return <p>Loading ...</p>;
   }
@@ -67,10 +66,9 @@ const ChannelsList = props => {
           </Link>
         </div>)
       )}
-      {/*<button type="button">Load More</button>*/}
-        {/* <button OnClick={testFetchMore}>
-          Load More
-        </button> */}
+      <button onClick={loadMore}>
+        Load More
+      </button>
     </div>
 
   );
@@ -102,10 +100,23 @@ export default graphql(channelsListQuery, {
   props: (props) => {
     console.log(props)
     return Object.assign(props, {
-      testFunc: () => {
-        console.log('hello')
+      loadMore: () => {
+        return props.data.fetchMore({
+          variables: { 
+            offset: props.data.channels.length,
+            limit: 2
+          },
+          updateQuery: (previousResult, { fetchMoreResult }) => {
+            console.log('previousResult ', previousResult)
+            console.log('fetchMoreResult ', fetchMoreResult)
+            return Object.assign({}, previousResult, {
+              channels: [...previousResult.channels, ...fetchMoreResult.channels],
+            });
+          }
+        });
       }
-    })
+    });
+    console.log('props: ', props)
   } 
 })(ChannelsList);
 

@@ -72,15 +72,28 @@ export const resolvers = {
     },
     //channel: (root, { id }, { cursor }) => {
     channel: (root, args) => {
-      let { id, cursor } = args;
+      //let { id, cursor } = args;
+      // let channel = channels.find(channel => channel.id === id);
+      // let messagePage = channel.messages.slice(cursor-2, cursor);
+      // messagePage.cursor = cursor-2;
+      // channel.MessagePage = messagePage;
+      // console.log('channel: ', channel);
+      //channel.MessagePage.cursor = cursor - 2;
+      return channels.find(channel => channel.id === id);
+      /*
       let channel = channels.find(channel => channel.id === id);
       console.log('og channel: ', channel);
-      let messages = channel.messages.slice(cursor-2, cursor);
-      console.log('messages: ', messages);
-      messages.cursor = cursor-2;
-      channel.messages = messages;
-      //console.log('channel: ', channel);
-      return channel;
+      let messagePage = channel.messages.slice(cursor-2, cursor); 
+      messagePage.cursor = cursor - 2;
+      //console.log('messagePage: ', messagePage)
+      let newChannel = {
+        id: channel.id,
+        name: channel.name,
+        messages: messagePage
+      }
+      console.log('newChannel: ', newChannel);
+      return newChannel;
+      */
     },
   },
   Mutation: {

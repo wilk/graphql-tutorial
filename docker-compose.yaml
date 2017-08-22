@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  apollo-client:
+    command: "yarn start"
+    image: apollo-react:1
+    build:
+      dockerfile: docker/client/Dockerfile
+      context: ./
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: 'development'
+    volumes:
+      - ./client:/opt/app

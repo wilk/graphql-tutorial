@@ -9,11 +9,30 @@ const AddChannel = ({ mutate }) => {
       evt.persist();
       mutate({ 
         variables: { name: evt.target.value },
-        refetchQueries: [ { query: channelsListQuery }],
+        // this will update the store with new data
+        // before getting the answer from the server
+        // only if optimisticResponse is defined
+        update: (store, {data: {addChannel}}) => {
+          // this data is read from the cache
+          const data = store.readQuery({query: channelsListQuery})
+
+          // addChannel is the new channel retrieved from the mutation addChannel
+          data.channels.push(addChannel)
+
+          // write back to the cache the new dataset
+          store.writeQuery({query: channelsListQuery, data})
+        },
+        // this is what we expect from the server response
+        optimisticResponse: {
+          addChannel: {
+            name: evt.target.value,
+            id: Math.floor(Math.random() * -10000),
+            __typename: 'Channel'
+          }
+        }
+        //refetchQueries: [ { query: channelsListQuery }],
       })
-      .then( res => {
-        evt.target.value = '';  
-      });
+      evt.target.value = '';
     }
   };
 

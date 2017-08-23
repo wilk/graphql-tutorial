@@ -8,10 +8,16 @@ import {
     graphql,
 } from 'react-apollo';
 
-const ChannelDetails = () => {
-  let messages = [{id:'1', text:"Stub Message - To Replace"}];
-  let name = "Stub Name";
-  let channel = {name, messages};
+const ChannelDetails = ({data: {loading, error, channel}, match}) => {
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+  if (error) {
+    return <p>{error.message}</p>;
+  }
+  if(channel === null){
+    return <NotFound />
+  }
 
   return (
     <div>
@@ -22,4 +28,26 @@ const ChannelDetails = () => {
     </div>);
 }
 
-export default (ChannelDetails);
+// this is a query with params
+export const channelDetailsQuery = gql`
+  query ChannelDetailsQuery($id: ID!) {
+    channel(id: $id) {
+      id
+      name
+      messages {
+        id
+        text
+      }
+    }
+  }
+`
+
+const ChannelDetailWithQuery = graphql(channelDetailsQuery, {
+  options: (props) => ({
+    // and here we're injecting the param id inside the query
+    // by accessing the component's props
+    variables: { id: props.match.params.channelId },
+  })
+})(ChannelDetails)
+
+export default ChannelDetailWithQuery;

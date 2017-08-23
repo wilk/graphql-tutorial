@@ -27,6 +27,7 @@ export const resolvers = {
     channels: () => {
       return channels;
     },
+    channel: (root, args) => channels.find(ch => ch.id === args.id)
   },
   Mutation: {
     addChannel: (root, args) => {
@@ -34,5 +35,16 @@ export const resolvers = {
       channels.push(newChannel);
       return newChannel;
     },
+    addMessage: (root, args) => {
+      // this is a resolver of a mutation with args (channelId)
+      const newMessage = { id: String(nextMessageId++), text: args.message.text },
+        channel = channels.find(ch => ch.id === args.message.channelId)
+
+      if (!channel) throw new Error('Channel does\'nt exist')
+
+      channel.messages.push(newMessage)
+
+      return newMessage
+    }
   },
 };
